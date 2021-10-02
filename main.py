@@ -18,4 +18,21 @@ def input():
   db[str(temp)] = info
   return jsonify(info)
 
+@app.route('/output', methods = ['GET'])
+def output():
+  output = []
+  dict = {}
+  for i in db:
+    aname = db[i][0]
+    loc = db[i][1]
+    desc = db[i][2]
+    dict = {
+      "aname": aname,
+      "loc": loc,
+      "desc": desc
+    }
+    output.append(dict)
+  print(output)
+  return jsonify(output)
+
 app.run(host='0.0.0.0', port=8080)
