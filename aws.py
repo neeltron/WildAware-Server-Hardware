@@ -11,25 +11,25 @@ Created on Sun Oct  3 03:05:36 2021
 import boto3
 
 def detect_labels(photo, bucket):
-    client=boto3.client('rekognition')
-    response = client.detect_labels(Image={'S3Object':{'Bucket':bucket,'Name':photo}}, MaxLabels=10)
-    print('Detected labels for ' + photo) 
-    print()
-    i = 0
-    labelperm = ""
-    for label in response['Labels']:
-      i += 1
-      if i == 1:
-        labelperm = label['Name']
-        break
-    return labelperm
+  client=boto3.client('rekognition')
+  response = client.detect_labels(Image={'S3Object':{'Bucket':bucket,'Name':photo}}, MaxLabels=10)
+  print('Detected labels for ' + photo) 
+  print()
+  i = 0
+  labelperm = ""
+  for label in response['Labels']:
+    i += 1
+    if i == 1:
+      labelperm = label['Name']
+      break
+  return labelperm
 
 
 def main():
-    photo='NewPicture.jpg'
-    bucket='wildaware'
-    label_count=detect_labels(photo, bucket)
-    print("Labels detected: " + str(label_count))
+  photo='image.jpg'
+  bucket='wildaware'
+  label_count=detect_labels(photo, bucket)
+  print("Labels detected: " + str(label_count))
 
 
 if __name__ == "__main__":
