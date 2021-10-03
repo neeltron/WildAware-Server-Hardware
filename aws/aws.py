@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Oct  3 12:51:22 2021
+
+@author: Neel
+"""
+
 import cv2
 import random
 import os
@@ -48,3 +55,15 @@ upload_file(imgname, 'wildaware')
 label = detect_labels(imgname, 'wildaware')
 
 print(label)
+
+animal = label
+imageurl = 'https://wildaware.s3.ap-south-1.amazonaws.com/' + imgname
+
+payload = bytes(animal + ' ' + imageurl, 'utf-8')
+
+print(payload)
+
+import serial
+s = serial.Serial('COM4')
+s.write(payload)
+s.close()
