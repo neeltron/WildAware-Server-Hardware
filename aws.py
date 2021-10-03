@@ -1,36 +1,50 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Oct  3 03:05:36 2021
-
-@author: Neel
-"""
-
-#Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-#PDX-License-Identifier: MIT-0 (For details, see https://github.com/awsdocs/amazon-rekognition-developer-guide/blob/master/LICENSE-SAMPLECODE.)
-
+import cv2
+import random
+import os
 import boto3
 
+def upload_file(file_name, bucket, object_name=None):
+    if object_name is None:
+        object_name = os.path.basename(file_name)
+
+    s3_client = boto3.client('s3')
+    try:
+        response = s3_client.upload_file(file_name, bucket, object_name)
+    except ClientError as e:
+        logging.error(e)
+        return False
+    return True
+
 def detect_labels(photo, bucket):
-  client=boto3.client('rekognition')
-  response = client.detect_labels(Image={'S3Object':{'Bucket':bucket,'Name':photo}}, MaxLabels=10)
-  print('Detected labels for ' + photo) 
-  print()
-  i = 0
-  labelperm = ""
-  for label in response['Labels']:
-    i += 1
-    if i == 1:
-      labelperm = label['Name']
-      break
-  return labelperm
+    client=boto3.client('rekognition')
+    response = client.detect_labels(Image={'S3Object':{'Bucket':bucket,'Name':photo}}, MaxLabels=10)
+    print('Detected labels for ' + photo) 
+    print()
+    i = 0
+    labelperm = ""
+    for label in response['Labels']:
+        i += 1
+        if i == 1:
+            labelperm = label['Name']
+        print ("Label: " + label['Name'])
+    return labelperm
 
+num = random.randint(0, 1000)
+imgname = "image" + str(num) + ".jpg"
 
-def main():
-  photo='image.jpg'
-  bucket='wildaware'
-  label_count=detect_labels(photo, bucket)
-  print("Labels detected: " + str(label_count))
+videoCaptureObject = cv2.VideoCapture(0)
+result = True
 
+while(result):
+    ret,frame = videoCaptureObject.read()
+    cv2.imwrite(imgname, frame)
+    result = False
+    
+videoCaptureObject.release()
+cv2.destroyAllWindows()
 
-if __name__ == "__main__":
-    main()
+upload_file(imgname, 'wildaware')
+
+label = detect_labels(imgname, 'wildaware')
+
+print(label)

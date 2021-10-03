@@ -6,7 +6,7 @@ app = Flask('app')
 
 @app.route('/')
 def hello_world():
-  return 'Hello, World!'
+  return '<img src = "https://wildaware.s3.ap-south-1.amazonaws.com/image39.jpg">'
 
 @app.route('/input', methods = ['GET'])
 def input():
