@@ -18,10 +18,10 @@ def detect_labels(photo, bucket):
     i = 0
     labelperm = ""
     for label in response['Labels']:
-        i += 1
-        if i == 1:
-            labelperm = label['Name']
-        print ("Label: " + label['Name'])
+      i += 1
+      if i == 1:
+        labelperm = label['Name']
+        break
     return labelperm
 
 
