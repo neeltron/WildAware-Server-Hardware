@@ -11,10 +11,11 @@ def hello_world():
 @app.route('/input', methods = ['GET'])
 def input():
   temp = random.randint(0, 1000)
+  url = request.args.get('url')
   aname = request.args.get('aname')
   loc = request.args.get('loc')
   desc = request.args.get('desc')
-  info = [aname, loc, desc]
+  info = [url, aname, loc, desc]
   db[str(temp)] = info
   return jsonify(info)
 
@@ -23,10 +24,12 @@ def output():
   output = []
   dict = {}
   for i in db:
-    aname = db[i][0]
-    loc = db[i][1]
-    desc = db[i][2]
+    aname = db[i][1]
+    loc = db[i][2]
+    desc = db[i][3]
+    url = db[i][0]
     dict = {
+      "url": url,
       "aname": aname,
       "loc": loc,
       "desc": desc
