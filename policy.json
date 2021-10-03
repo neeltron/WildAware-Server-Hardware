@@ -1,0 +1,15 @@
+{
+  "Id": "Policy1633249046224",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Stmt1633249043550",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::wildaware/*",
+      "Principal": "*"
+    }
+  ]
+}
